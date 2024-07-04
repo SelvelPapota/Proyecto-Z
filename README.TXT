@@ -1,81 +1,77 @@
+Aquí está, por fin. El código fuente de DOOM está disponible para tu
+uso sin fines de lucro. Aún necesitas datos reales de DOOM para trabajar con este código.
+Si en realidad no posees una copia real de uno de los DOOM, deberías
+Todavía podrás encontrarlos en tiendas de software.
 
-Here it is, at long last.  The DOOM source code is released for your
-non-profit use.  You still need real DOOM data to work with this code.
-If you don't actually own a real copy of one of the DOOMs, you should
-still be able to find them at software stores.
+Muchas gracias a Bernd Kreimeier por tomarse el tiempo para limpiar el
+proyecto y asegurarse de que realmente funcione. Los proyectos tienden a pudrirse si
+lo dejas en paz durante unos años y requiere esfuerzo que alguien logre
+tratarlo de nuevo.
 
-Many thanks to Bernd Kreimeier for taking the time to clean up the
-project and make sure that it actually works.  Projects tends to rot if
-you leave it alone for a few years, and it takes effort for someone to
-deal with it again.
+La mala noticia: este código sólo se compila y se ejecuta en Linux. no pudimos
+liberar el código DOS debido a una biblioteca de sonidos con derechos de autor que utilizamos
+(Vaya, ¿fue un error? Ahora escribo mi propio código de sonido), y
+Honestamente ni siquiera sé qué pasó con el puerto que hizo Microsoft.
+a las ventanas.
 
-The bad news:  this code only compiles and runs on linux.  We couldn't
-release the dos code because of a copyrighted sound library we used
-(wow, was that a mistake -- I write my own sound code now), and I
-honestly don't even know what happened to the port that microsoft did
-to windows.
+Aún así, el código es bastante portátil y debería ser sencillo de utilizar.
+póngalo en práctica en casi cualquier plataforma.
 
-Still, the code is quite portable, and it should be straightforward to
-bring it up on just about any platform.
+Escribí este código hace mucho, mucho tiempo y hay muchas cosas
+que parecen completamente tontos en retrospectiva (usando coordenadas polares para
+me viene a la mente un recorte), pero en general debería seguir siendo una base útil
+para experimentar y seguir construyendo.
 
-I wrote this code a long, long time ago, and there are plenty of things
-that seem downright silly in retrospect (using polar coordinates for
-clipping comes to mind), but overall it should still be a usefull base
-to experiment and build on.
+El concepto básico de renderizado: líneas horizontales y verticales de constante.
+Z con sombreado de luz fijo por banda fue acertado, pero la implementación
+podría mejorarse dramáticamente desde el código original si fuera
+revisitado. La forma en que el renderizado procedió desde las paredes hasta los pisos para
+los sprites podrían colapsarse en un solo recorrido de adelante hacia atrás del bsp
+árbol para recopilar información, luego dibujar todo el contenido de un subsector
+en el camino de regreso al árbol. Requiere tratamiento de suelos y techos.
+como polígonos, en lugar de solo los espacios entre paredes, y requiere
+recortar vallas publicitarias de sprites en fragmentos de subsector, pero sería
+Lo correcto.
 
-The basic rendering concept -- horizontal and vertical lines of constant
-Z with fixed light shading per band was dead-on, but the implementation
-could be improved dramatically from the original code if it were
-revisited.  The way the rendering proceded from walls to floors to
-sprites could be collapsed into a single front-to-back walk of the bsp
-tree to collect information, then draw all the contents of a subsector
-on the way back up the tree.  It requires treating floors and ceilings
-as polygons, rather than just the gaps between walls, and it requires
-clipping sprite billboards into subsector fragments, but it would be
-The Right Thing.
+El movimiento y la línea de visión que se comparan con las líneas es uno de los
+Errores más grandes que recuerdo. Es un código desordenado que tenía algunos
+casos de falla, y había una solución mucho más simple (y más rápida)
+sentado frente a mi cara. Usé el árbol BSP para renderizar cosas,
+pero no me di cuenta en ese momento de que también podría usarse para
+pruebas ambientales. Reemplazo de la prueba de línea de visión con una línea bsp
+clip sería bastante fácil. Los amplios volúmenes para el movimiento se vuelven un poco
+más difícil y aborda muchos de los desafíos que se enfrentan en terremoto/sismo2
+con biseles de borde sobre poliedros.
 
-The movement and line of sight checking against the lines is one of the
-bigger misses that I look back on.  It is messy code that had some
-failure cases, and there was a vastly simpler (and faster) solution
-sitting in front of my face.  I used the BSP tree for rendering things,
-but I didn't realize at the time that it could also be used for
-environment testing.  Replacing the line of sight test with a bsp line
-clip would be pretty easy.  Sweeping volumes for movement gets a bit
-tougher, and touches on many of the challenges faced in quake / quake2
-with edge bevels on polyhedrons.
+Algunas ideas de proyectos:
 
-Some project ideas:
+Póngalo a su sistema operativo favorito.
 
-Port it to your favorite operating system.
-
-Add some rendering features -- transparency, look up / down, slopes,
+Agregue algunas características de renderizado: transparencia, mirar hacia arriba/abajo, pendientes,
 etc.
 
-Add some game features -- weapons, jumping, ducking, flying, etc.
+Agregue algunas características del juego: armas, saltar, agacharse, volar, etc.
 
-Create a packet server based internet game.
+Crea un juego de Internet basado en un servidor de paquetes.
 
-Create a client / server based internet game.
+Cree un juego de Internet basado en cliente/servidor.
 
-Do a 3D accelerated version.  On modern hardware (fast pentium + 3DFX)
-you probably wouldn't even need to be clever -- you could just draw the
-entire level and get reasonable speed.  With a touch of effort, it should
-easily lock at 60 fps (well, there are some issues with DOOM's 35 hz
-timebase...).  The biggest issues would probably be the non-power of two
-texture sizes and the walls composed of multiple textures.
+Haz una versión acelerada en 3D. En hardware moderno (pentium rápido + 3DFX)
+Probablemente ni siquiera necesitarías ser inteligente: podrías simplemente dibujar el
+todo el nivel y obtener una velocidad razonable. Con un poco de esfuerzo, debería
+bloquear fácilmente a 60 fps (bueno, hay algunos problemas con los 35 hz de DOOM)
+base de tiempo...). El mayor problema probablemente sería la falta de poder de dos
+tamaños de textura y las paredes compuestas de múltiples texturas.
 
 
-I don't have a real good guess at how many people are going to be
-playing with this, but if significant projects are undertaken, it would
-be cool to see a level of community cooperation.  I know that most early
-projects are going to be rough hacks done in isolation, but I would be
-very pleased to see a coordinated 'net release of an improved, backwards
-compatable version of DOOM on multiple platforms next year.
+No tengo una idea muy clara de cuántas personas habrá
+jugar con esto, pero si se emprenden proyectos importantes, sería
+Sería genial ver un nivel de cooperación comunitaria. Lo sé más temprano
+Los proyectos van a ser trucos toscos hechos de forma aislada, pero estaría
+muy contento de ver un lanzamiento neto coordinado de una versión mejorada y al revés
+versión compatible de DOOM en múltiples plataformas el próximo año.
 
-Have fun.
+Divertirse.
 
-John Carmack
-12-23-97
-
-Copyright (c) ZeniMax Media Inc.
-Licensed under the GNU General Public License 2.0.
+Papota
+23-12-97
